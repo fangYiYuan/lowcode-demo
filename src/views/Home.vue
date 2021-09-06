@@ -9,22 +9,42 @@
               <Editor />
           </div>
       </section>
+      <!-- 右侧属性列表 -->
+        <section class="right">
+            <el-tabs v-model="activeName">
+                <el-tab-pane label="属性" name="attr">
+                    <AttrList v-if="curComponent" />
+                    <p v-else class="placeholder">请选择组件</p>
+                </el-tab-pane>
+            </el-tabs>
+        </section>
     </main>
   </div>
 </template>
 
 <script>
 import ComponentList from '@/components/ComponentList' // @ is an alias to /src
+import AttrList from '@/components/AttrList' // @ is an alias to /src
 import Editor from '@/components/Editor' // @ is an alias to /src
 import { deepCopy } from '@/utils/utils'
 import generateID from '@/utils/generateID'
 import componentList from '@/utils/componentList'
+import { mapState } from 'vuex'
 
 export default {
   components: {
     ComponentList,
-    Editor
+    Editor,
+    AttrList
   },
+  data () {
+    return {
+      activeName: 'attr'
+    }
+  },
+  computed: mapState([
+    'curComponent'
+  ]),
   methods: {
     handleDrop (e) {
       e.preventDefault()
@@ -66,14 +86,15 @@ export default {
         .right {
             position: absolute;
             height: 100%;
-            width: 262px;
+            width: 400px;
             right: 0;
             top: 0;
+            background: #fff;
         }
 
         .center {
-            margin-left: 200px;
-            margin-right: 262px;
+            margin-left: 100px;
+            margin-right: 100px;
             background: #f5f5f5;
             height: 100%;
             overflow: auto;

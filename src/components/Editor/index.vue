@@ -9,37 +9,12 @@
         <!-- 网格线 -->
         <Grid />
 
-        <!--页面组件列表展示-->
-        <!-- <Shape v-for="(item, index) in componentData"
-            :defaultStyle="item.style"
-            :style="getShapeStyle(item.style)"
-            :key="item.id"
-            :active="item.id === (curComponent || {}).id"
-            :element="item"
-            :index="index"
-            :class="{ lock: item.isLock }"
-        >
-            <component
-                v-if="item.component != 'v-text'"
-                class="component"
-                :is="item.component"
-                :style="getComponentStyle(item.style)"
-                :propValue="item.propValue"
-                :element="item"
-                :id="'component' + item.id"
-            />
+        <Shape v-for="item in componentData" :key="item.id" :data="item">
+          <Charts
+            :data="item"
+          />
+        </Shape>
 
-            <component
-                v-else
-                class="component"
-                :is="item.component"
-                :style="getComponentStyle(item.style)"
-                :propValue="item.propValue"
-                @input="handleInput"
-                :element="item"
-                :id="'component' + item.id"
-            />
-        </Shape> -->
         <!-- 右击菜单 -->
         <!-- <ContextMenu /> -->
         <!-- 标线 -->
@@ -50,7 +25,9 @@
 </template>
 
 <script>
+import Charts from '@/components/Charts'
 import Grid from './Grid'
+import Shape from './Shape'
 import { mapState } from 'vuex'
 import { changeStyleWithScale } from '@/utils/translate'
 
@@ -61,7 +38,7 @@ export default {
       default: true
     }
   },
-  components: { Grid },
+  components: { Grid, Shape, Charts },
   data () {
     return {
       editorX: 0,
@@ -76,10 +53,12 @@ export default {
     }
   },
   computed: mapState([
-    'canvasStyleData'
+    'canvasStyleData',
+    'componentData'
   ]),
   mounted () {
     console.log('=>111', this.canvasStyleData)
+    console.log('=>componentData', this.componentData)
   },
   methods: {
     changeStyleWithScale

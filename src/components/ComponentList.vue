@@ -19,7 +19,6 @@ export default {
   },
   methods: {
     handleDragStart (e) {
-      console.log('=>', e)
       e.dataTransfer.setData('index', e.target.dataset.index)
     }
   }
