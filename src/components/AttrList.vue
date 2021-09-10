@@ -1,43 +1,114 @@
 <!-- TODO: 这个页面后续将用 JSX 重构 -->
 <template>
     <div class="attr-list">
-        <!-- <el-form>
-            <el-form-item v-for="(key, index) in styleKeys.filter(item => item != 'rotate')" :key="index" :label="map[key]">
-                <el-color-picker v-if="key == 'borderColor'" v-model="curComponent.style[key]"></el-color-picker>
-                <el-color-picker v-else-if="key == 'color'" v-model="curComponent.style[key]"></el-color-picker>
-                <el-color-picker v-else-if="key == 'backgroundColor'" v-model="curComponent.style[key]"></el-color-picker>
-                <el-select v-else-if="selectKey.includes(key)" v-model="curComponent.style[key]">
-                    <template v-if="key == 'textAlign'">
-                        <el-option
-                            v-for="item in textAlignOptions"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value"
-                        ></el-option>
-                    </template>
-                    <template v-else-if="key == 'borderStyle'">
-                        <el-option
-                            v-for="item in borderStyleOptions"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value"
-                        ></el-option>
-                    </template>
-                    <template v-else>
-                        <el-option
-                            v-for="item in verticalAlignOptions"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value"
-                        ></el-option>
-                    </template>
-                </el-select>
-                <el-input type="number" v-else v-model.number="curComponent.style[key]" />
+      <el-form label-width="120px">
+        <el-form-item v-for="item in optionsKeys.filter(key => !['dataset', 'series'].includes(key))" :key="item" :label="item">
+          <el-input v-if="item === 'viewName'" v-model="curComponent.options['viewName']"></el-input>
+          <el-select v-if="item === 'xAxis'" v-model="curComponent.options.xAxis.type">
+            <el-option
+                v-for="item in xAxisOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+            ></el-option>
+          </el-select>
+          <el-select v-if="item === 'yAxis'" v-model="curComponent.options.yAxis.type">
+            <el-option
+                v-for="item in xAxisOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <el-card class="box-card">
+        <div v-for="(item, index) in curComponent.options.series" :key="index">
+        <el-form v-if="(index + 1) === tabPosition" label-width="120px">
+          <el-form-item label="数据源">
+            <el-radio-group v-model="tabPosition">
+              <el-radio-button
+                v-for="(item, index) in curComponent.options.dataset.source[0]"
+                :key="index"
+                :label="index"
+                v-if="index > 0"
+              >
+                <span >{{item}}</span>
+              </el-radio-button>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="type">
+            <el-select v-model="item.type">
+              <el-option
+                  v-for="item in seriesType"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="柱条颜色">
+            <el-color-picker v-model="item.itemStyle['color']"></el-color-picker>
+          </el-form-item>
+          <el-form-item label="label">
+            <el-row type="flex" justify="start">
+              <el-col :span="3">
+                <el-switch
+                  v-model="item.label['show']"
+                  active-color="#13ce66"
+                  inactive-color="#ff4949">
+                </el-switch>
+              </el-col>
+              <el-col :span="6">
+                <el-color-picker v-model="item.label['color']"></el-color-picker>
+              </el-col>
+            </el-row>
+          </el-form-item>
+          <div  v-if="item.type === 'line'">
+            <el-form-item label="标记">
+              <el-select v-model="item.markPoint.symbol">
+                <el-option
+                    v-for="item in markPointData"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                ></el-option>
+              </el-select>
+              <el-select v-if="item.markPoint.data" v-model="item.markPoint.data[0]['type']">
+                <el-option
+                    v-for="item in markPointTypeData"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                ></el-option>
+              </el-select>
             </el-form-item>
-            <el-form-item label="内容" v-if="curComponent && !excludes.includes(curComponent.component)">
-                <el-input type="textarea" v-model="curComponent.propValue" />
+            <!-- <el-form-item label="标记类型">
+            </el-form-item> -->
+            <el-form-item label="取值维度">
+             <el-select v-if="item.seriesLayoutBy" v-model="item.seriesLayoutBy">
+                <el-option
+                    v-for="item in seriesLayoutByData"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                ></el-option>
+              </el-select>
             </el-form-item>
-        </el-form> -->
+            <el-form-item label="平滑曲线">
+              <el-switch
+                v-model="item.smooth"
+                active-color="#13ce66"
+                inactive-color="#ff4949">
+              </el-switch>
+            </el-form-item>
+          </div>
+          <el-form-item label="stack">
+            <el-input v-model="item.stack"></el-input>
+          </el-form-item>
+        </el-form>
+      </div>
+      </el-card>
     </div>
 </template>
 
@@ -45,6 +116,69 @@
 export default {
   data () {
     return {
+      tabPosition: 1,
+      xAxisOptions: [
+        {
+          label: 'category',
+          value: 'category'
+        },
+        {
+          label: 'value',
+          value: 'value'
+        }
+      ],
+      seriesType: [
+        {
+          label: 'bar',
+          value: 'bar'
+        },
+        {
+          label: 'line',
+          value: 'line'
+        }
+      ],
+      markPointData: [
+        {
+          label: 'none',
+          value: 'none'
+        },
+        {
+          label: 'circle',
+          value: 'circle'
+        },
+        {
+          label: 'pin',
+          value: 'pin'
+        },
+        {
+          label: 'arrow',
+          value: 'arrow'
+        }
+      ],
+      markPointTypeData: [
+        {
+          label: 'min',
+          value: 'min'
+        },
+        {
+          label: 'max',
+          value: 'max'
+        },
+        {
+          label: 'average',
+          value: 'average'
+        }
+      ],
+      seriesLayoutByData: [
+        {
+          label: 'column',
+          value: 'column'
+        },
+        {
+          label: 'row',
+          value: 'row'
+        }
+      ],
       excludes: ['Picture', 'Group'], // 这些组件不显示内容
       textAlignOptions: [
         {
@@ -86,9 +220,8 @@ export default {
       ],
       selectKey: ['textAlign', 'borderStyle', 'verticalAlign'],
       map: {
-        left: 'x 坐标',
-        top: 'y 坐标',
-        height: '高',
+        type: '类型',
+        label: '高',
         width: '宽',
         color: '颜色',
         backgroundColor: '背景色',
@@ -107,11 +240,19 @@ export default {
     }
   },
   computed: {
-    // styleKeys () {
-    //   return this.$store.state.curComponent ? Object.keys(this.$store.state.curComponent.style) : []
-    // },
+    optionsKeys () {
+      return this.$store.state.curComponent ? Object.keys(this.$store.state.curComponent.options) : []
+    },
     curComponent () {
       return this.$store.state.curComponent
+    }
+  },
+  watch: {
+    curComponent: {
+      deep: true,
+      handler (n) {
+        console.log('=>nncccc', n)
+      }
     }
   }
 }
@@ -119,9 +260,9 @@ export default {
 
 <style lang="scss" scoped>
 .attr-list {
-    overflow: auto;
-    padding: 20px;
-    padding-top: 0;
-    height: 100%;
+  overflow: auto;
+  padding: 20px;
+  padding-top: 0;
+  height: 100%;
 }
 </style>

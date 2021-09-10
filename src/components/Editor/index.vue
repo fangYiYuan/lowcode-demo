@@ -3,15 +3,20 @@
         :class="{ edit: isEdit }"
         :style="{
             width: changeStyleWithScale(canvasStyleData.width) + 'px',
-            height: changeStyleWithScale(canvasStyleData.height) + 'px',
+            height: canvasStyleData.height ? (changeStyleWithScale(canvasStyleData.height) + 'px') : '100%',
         }"
     >
         <!-- 网格线 -->
         <Grid />
 
-        <Shape v-for="item in componentData" :key="item.id" :data="item">
+        <Shape
+          v-for="item in componentData"
+          :key="item.id"
+          :data="item"
+          :active="item.id === (curComponent || {}).id"
+        >
           <Charts
-            :data="item"
+            :options="item.options"
           />
         </Shape>
 
@@ -54,11 +59,10 @@ export default {
   },
   computed: mapState([
     'canvasStyleData',
-    'componentData'
+    'componentData',
+    'curComponent'
   ]),
   mounted () {
-    console.log('=>111', this.canvasStyleData)
-    console.log('=>componentData', this.componentData)
   },
   methods: {
     changeStyleWithScale

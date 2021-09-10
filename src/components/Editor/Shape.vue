@@ -1,5 +1,5 @@
 <template>
-  <div class="shape" @click="selectChart">
+  <div class="shape" :class="{active}" @click="selectChart">
     <slot></slot>
   </div>
 </template>
@@ -10,6 +10,10 @@ export default {
     data: {
       type: Object,
       default: () => {}
+    },
+    active: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -25,4 +29,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.shape{
+  padding: 0 10px;
+}
+.active {
+    outline: 1px solid #70c0ff;
+    user-select: none;
+}
 </style>

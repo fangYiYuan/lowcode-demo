@@ -2,7 +2,6 @@
   <div @dragstart="handleDragStart" class="component-list">
         <div v-for="(item, index) in componentList" :key="index" class="list" draggable
         :data-index="index">
-            <!-- <span class="iconfont" :class="'icon-' + item.icon"></span> -->
             <span>{{ item.label }}</span>
         </div>
     </div>

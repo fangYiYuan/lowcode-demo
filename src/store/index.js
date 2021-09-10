@@ -7,7 +7,7 @@ export default new Vuex.Store({
   state: {
     canvasStyleData: { // 页面全局数据
       width: 375,
-      height: 740,
+      height: '',
       scale: 100
     },
     componentData: [], // 画布上的组件
@@ -18,7 +18,6 @@ export default new Vuex.Store({
       state.componentData.push(component)
     },
     setCurComponent (state, { data }) {
-      console.log('=>ddd', data)
       state.curComponent = data
     }
   },

@@ -5,27 +5,85 @@ export const commonStyle = {
 }
 
 export const commonAttr = {
-  animations: [],
-  events: {},
-  groupStyle: {}, // 当一个组件成为 Group 的子组件时使用
-  isLock: false // 是否锁定组件
+  events: {}
 }
 
 // 编辑器左侧组件列表
 const list = [
   {
-    component: 'VBar',
-    label: 'Bar',
+    component: 'Chart',
+    label: 'Chart',
     propValue: '',
-    style: {
-      width: 200,
-      height: 22,
-      fontSize: 14,
-      fontWeight: 500,
-      lineHeight: '',
-      letterSpacing: 0,
-      textAlign: '',
-      color: ''
+    options: {
+      viewName: '年度各大区平均TBOX在线率',
+      xAxis: { type: 'category' },
+      yAxis: { type: 'value' },
+      dataset: {
+        source: [
+          ['product', '2015', '2016', '2017'],
+          ['Matcha', 43.3, 85.8, 93.7],
+          ['Milk', 83.1, 73.4, 55.1],
+          ['Cheese', 86.4, 65.2, 82.5],
+          ['Walnut', 72.4, 53.9, 39.1]
+        ]
+      },
+      series: [
+        {
+          type: 'bar',
+          label: {
+            show: true,
+            color: '#333'
+          },
+          itemStyle: {
+            color: '#c1232b'
+          },
+          stack: 'stack',
+          seriesLayoutBy: 'column',
+          markPoint: {
+            symbol: 'none',
+            data: [
+              { type: 'max' }
+            ]
+          }
+        },
+        {
+          type: 'line',
+          label: {
+            show: true,
+            color: '#333'
+          },
+          itemStyle: {
+            color: '#27727b'
+          },
+          stack: '',
+          seriesLayoutBy: 'column',
+          markPoint: {
+            symbol: 'pin',
+            data: [
+              { type: 'max' }
+            ]
+          },
+          smooth: true
+        },
+        {
+          type: 'bar',
+          label: {
+            show: true,
+            color: '#333'
+          },
+          itemStyle: {
+            color: '#fcce10'
+          },
+          stack: 'stack',
+          seriesLayoutBy: 'column',
+          markPoint: {
+            symbol: 'none',
+            data: [
+              { type: 'max' }
+            ]
+          }
+        }
+      ]
     }
   }
 ]
