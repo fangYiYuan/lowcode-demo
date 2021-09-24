@@ -6,19 +6,27 @@
             height: canvasStyleData.height ? (changeStyleWithScale(canvasStyleData.height) + 'px') : '100%',
         }"
     >
+    <IndexHead class="head">
+      <el-input v-model="mTitle" placeholder="请输入内容" class="head-in"></el-input>
+    </IndexHead>
         <!-- 网格线 -->
-        <Grid />
-
-        <Shape
-          v-for="item in componentData"
-          :key="item.id"
-          :data="item"
-          :active="item.id === (curComponent || {}).id"
-        >
-          <Charts
-            :options="item.options"
-          />
-        </Shape>
+        <!-- <Grid /> -->
+        <Draggable :set-data="setData" :list="componentData" group="article" class="dragArea">
+          <transition-group type="transition" name="flip-list">
+            <Shape
+                v-for="(item, index) in componentData"
+                :key="item.id"
+                class="item-css"
+                :data="item"
+                :ind="index"
+                :active="item.id === (curComponent || {}).id"
+              >
+                <Charts
+                  :options="item.options"
+                />
+            </Shape>
+          </transition-group>
+        </Draggable>
 
         <!-- 右击菜单 -->
         <!-- <ContextMenu /> -->
@@ -35,6 +43,8 @@ import Grid from './Grid'
 import Shape from './Shape'
 import { mapState } from 'vuex'
 import { changeStyleWithScale } from '@/utils/translate'
+import Draggable from 'vuedraggable'
+import IndexHead from './appHead'
 
 export default {
   props: {
@@ -43,9 +53,10 @@ export default {
       default: true
     }
   },
-  components: { Grid, Shape, Charts },
+  components: { Grid, Shape, Charts, Draggable, IndexHead },
   data () {
     return {
+      mTitle: '12321',
       editorX: 0,
       editorY: 0,
       start: { // 选中区域的起点
@@ -65,7 +76,10 @@ export default {
   mounted () {
   },
   methods: {
-    changeStyleWithScale
+    changeStyleWithScale,
+    setData (dataTransfer) {
+      dataTransfer.setData('Text', '')
+    }
   }
 }
 </script>
@@ -90,5 +104,34 @@ export default {
         width: 100%;
         height: 100%;
     }
+}
+.item-css{
+  position: relative;
+    box-sizing: content-box;
+    border: 2px dashed #ccc;
+    margin-bottom: 10px;
+    padding: 5px 10px 10px;
+    cursor: pointer;
+    transition: all 0.5s;
+    cursor: move;
+    .tool{
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      cursor: pointer;
+    }
+}
+::v-deep .el-input__inner {
+  display: block;
+  height: 30px;
+  width: 100%;
+  color: #fff;
+  background: #16d1a4;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  padding: 5px;
+  cursor: pointer;
+  text-align: center;
 }
 </style>

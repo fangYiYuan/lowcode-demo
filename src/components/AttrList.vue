@@ -52,7 +52,7 @@
           </el-form-item>
           <el-form-item label="label">
             <el-row type="flex" justify="start">
-              <el-col :span="3">
+              <el-col :span="4">
                 <el-switch
                   v-model="item.label['show']"
                   active-color="#13ce66"

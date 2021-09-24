@@ -62,7 +62,8 @@ export default {
     },
     handleDragover (e) {
       e.preventDefault()
-      e.dataTransfer.dropEffect = 'copy'
+      e.stopPropagation()
+      // e.dataTransfer.dropEffect = 'copy'
     }
   }
 }

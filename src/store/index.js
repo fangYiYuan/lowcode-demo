@@ -17,6 +17,13 @@ export default new Vuex.Store({
     addComponent (state, { component }) {
       state.componentData.push(component)
     },
+    deleteComponentData (state, { index }) {
+      if (typeof index === 'number') {
+        state.componentData.splice(index, 1)
+      } else {
+        state.componentData = []
+      }
+    },
     setCurComponent (state, { data }) {
       state.curComponent = data
     }
