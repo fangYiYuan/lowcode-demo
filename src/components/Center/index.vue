@@ -1,16 +1,12 @@
 <template>
     <div class="editor" id="editor"
-        :class="{ edit: isEdit }"
         :style="{
             width: changeStyleWithScale(canvasStyleData.width) + 'px',
-            height: canvasStyleData.height ? (changeStyleWithScale(canvasStyleData.height) + 'px') : '100%',
         }"
     >
     <IndexHead class="head">
       <el-input v-model="mTitle" placeholder="请输入内容" class="head-in"></el-input>
     </IndexHead>
-        <!-- 网格线 -->
-        <!-- <Grid /> -->
         <Draggable :set-data="setData" :list="componentData" group="article" class="dragArea">
           <transition-group type="transition" name="flip-list">
             <Shape
@@ -21,8 +17,14 @@
                 :ind="index"
                 :active="item.id === (curComponent || {}).id"
               >
-                <Charts
+                <!-- <Charts
                   :options="item.options"
+                /> -->
+                <component
+                  :is="item.component"
+                  :id="'component' + item.id"
+                  :options="item.options"
+                  :ind="index + 1"
                 />
             </Shape>
           </transition-group>
@@ -38,8 +40,7 @@
 </template>
 
 <script>
-import Charts from '@/components/Charts'
-import Grid from './Grid'
+// import Charts from '@/chartComponent/Charts'
 import Shape from './Shape'
 import { mapState } from 'vuex'
 import { changeStyleWithScale } from '@/utils/translate'
@@ -53,7 +54,7 @@ export default {
       default: true
     }
   },
-  components: { Grid, Shape, Charts, Draggable, IndexHead },
+  components: { Shape, Draggable, IndexHead },
   data () {
     return {
       mTitle: '12321',
@@ -89,7 +90,9 @@ export default {
     position: relative;
     background: #fff;
     margin: auto;
-
+    padding-bottom: 20px;
+    height: calc(100vh - 100px);
+    overflow-y: scroll;
     .lock {
         opacity: .5;
 
@@ -107,26 +110,28 @@ export default {
 }
 .item-css{
   position: relative;
-    box-sizing: content-box;
-    border: 2px dashed #ccc;
-    margin-bottom: 10px;
-    padding: 5px 10px 10px;
+  box-sizing: content-box;
+    // border: 2px dashed #ccc;
+    // margin-bottom: 10px;
+  box-shadow: 0px 7px 9px 0px #d9f5ed;
+  margin: 10px 10px;
+  padding: 5px 10px 10px;
+  cursor: pointer;
+  transition: all 0.5s;
+  cursor: move;
+  .tool{
+    position: absolute;
+    right: 20px;
+    top: 10px;
     cursor: pointer;
-    transition: all 0.5s;
-    cursor: move;
-    .tool{
-      position: absolute;
-      right: 10px;
-      top: 10px;
-      cursor: pointer;
-    }
+  }
 }
 ::v-deep .el-input__inner {
   display: block;
   height: 30px;
   width: 100%;
   color: #fff;
-  background: #16d1a4;
+  background: #000;
   border: none;
   border-radius: 4px;
   font-size: 16px;

@@ -1,10 +1,7 @@
 <template>
-  <div class="pd15 ehcarts-css shadow" style="position: relative">
+  <div class="card">
     <p class="title" v-if="options.viewName">
-      {{ options.viewName.replace(/\((.+?)\)/g, '') }}
-      <span style="color:#999;font-size:12px">
-        {{ options.viewName.match(/\((.+?)\)/g) ? options.viewName.match(/\((.+?)\)/g)[0] : '' }}
-      </span>
+      <span>{{ options.viewName }}</span>
     </p>
     <div ref="chart" class="chart-c"></div>
     <slot name="tip"></slot>
@@ -48,23 +45,6 @@ export default {
       if (!this.options) return
       echarts.dispose(this.myChart)
       this.myChart = echarts.init(this.$refs.chart, null, { renderer: 'svg' })
-      // const options = {
-      //   xAxis: {
-      //     type: 'category',
-      //     data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-      //   },
-      //   yAxis: {
-      //     type: 'value'
-      //   },
-      //   series: [{
-      //     data: [120, 200, 150, 80, 70, 110, 130],
-      //     type: 'bar',
-      //     showBackground: true,
-      //     backgroundStyle: {
-      //       color: 'rgba(180, 180, 180, 0.2)'
-      //     }
-      //   }]
-      // }
       const obj = {
         legend: {},
         tooltip: {}
@@ -81,20 +61,11 @@ export default {
   padding: 20px 15px;
 }
 .card {
-  margin: 15px 0;
-  box-shadow: 0 0 0.4rem 0.4rem hsla(0, 0%, 82%, 0.1);
-  margin: 0.2rem 0;
+  padding: 0 0 0 20px;
+  border-radius: 15px;
   background: #fff;
-}
-
-.pd20{
-  padding-bottom: 20px;
-}
-.ehcarts-css {
-  margin: 15px 0;
-  box-shadow: 0 0 0.4rem 0.4rem hsla(0, 0%, 82%, 0.1);
-  margin: 0.2rem 0;
-  background: #fff;
+  // margin: 10px 0;
+  // box-shadow: 0px 7px 9px 0px rgba(217, 245, 237, 1);
   .chart-c {
     width: 100%;
     height: 300px;
@@ -103,9 +74,22 @@ export default {
     }
   }
   .title {
-    font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 15px;
+    border-bottom: 1px solid #f0ebeb;
+    // padding: 0 10px 10px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    font-size: 28px;
+    text-align: left;
+    span {
+      // margin-left: 5px;
+      color:#999;
+      font-size:12px
+    }
+    i {
+      font-size: 24px;
+      color: #aea3a3;
+      margin-left: 10px;
+    }
   }
 }
 </style>

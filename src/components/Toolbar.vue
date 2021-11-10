@@ -1,6 +1,6 @@
 <template>
   <div class="toolbar">
-    <el-button @click="handleExport">导出JSON</el-button>
+    <el-button @click="handleExport">保存</el-button>
   </div>
 </template>
 
@@ -13,7 +13,9 @@ export default {
   },
   methods: {
     handleExport () {
-
+      if (!this.$store.state.componentData.length) return
+      const data = JSON.stringify(this.$store.state.componentData)
+      localStorage.setItem('_local_componentData', data)
     }
   }
 }

@@ -11,11 +11,15 @@ export default new Vuex.Store({
       scale: 100
     },
     componentData: [], // 画布上的组件
-    curComponent: {}
+    curComponent: {},
+    curComponentIndex: null
   },
   mutations: {
-    addComponent (state, { component }) {
-      state.componentData.push(component)
+    addComponent (state, { data }) {
+      state.componentData.push(data)
+    },
+    changeComponent (state, { data, index }) {
+      state.componentData.splice(index, 1, data)
     },
     deleteComponentData (state, { index }) {
       if (typeof index === 'number') {
@@ -24,8 +28,9 @@ export default new Vuex.Store({
         state.componentData = []
       }
     },
-    setCurComponent (state, { data }) {
+    setCurComponent (state, { data, index }) {
       state.curComponent = data
+      state.curComponentIndex = index
     }
   },
   actions: {

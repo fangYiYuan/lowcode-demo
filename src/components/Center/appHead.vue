@@ -45,7 +45,7 @@ export default {
     width: 100%;
     font-size: 16px;
     color: #fff;
-    background: #16d1a4;
+    background: #000;
     .title {
       font-size: 16px;
     }

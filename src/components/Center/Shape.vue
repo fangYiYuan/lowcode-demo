@@ -29,7 +29,7 @@ export default {
   },
   methods: {
     selectChart () {
-      this.$store.commit('setCurComponent', { data: this.data })
+      this.$store.commit('setCurComponent', { data: this.data, index: this.ind })
     },
     handleDelete (index) {
       this.$store.commit('deleteComponentData', { index })
@@ -51,7 +51,8 @@ export default {
     }
 }
 .active {
-    border-color: #00a680 !important;
+    // border-color: #000 !important;
+    box-shadow: 0px 7px 9px 0px #60857b !important;
     user-select: none;
 }
 </style>
